@@ -1,0 +1,8 @@
+.book-information {
+    display: flex !important;
+    justify-content: space-around;
+}
+
+.book-description {
+    margin: 25px;
+}

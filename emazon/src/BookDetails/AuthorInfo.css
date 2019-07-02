@@ -1,0 +1,8 @@
+.author-information {
+    display: flex;
+    justify-content: space-around;
+}
+
+.author-infomation{
+    margin: 25px;
+}

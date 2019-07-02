@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+}
+
+.page-layout {
+  background-image: url('./image/book-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center;
+ 
+}
+
+.page-content {
+  padding: 25px;
+  background-color: rgba(255, 255, 255, 0.8);
+  min-height: 600px;
+}
+
+.ant-menu,.ant-menu-sub,.page-sider, .ant-layout-sider-trigger {
+  background: #e0a97f !important;
+  color: #000;
+}
+
+.ant-menu-item-selected,
+.ant-menu-submenu-selected {
+  background-color: #e0bca1 !important;
+  color: #774118 !important;
+}
+
+.ant-menu-item-active,
+.ant-menu-submenu-active {
+  background-color: #e0bca1 !important;
+  color: #774118 !important;
+}
+
+.search-box {
+ padding: 15px 5px;
+}
+
+.search-box input {
+  background: antiquewhite !important;
+}
+
+.ant-input-search-button {
+  background: #774118 !important;
+  border-color: #774118 !important;
+}
+
