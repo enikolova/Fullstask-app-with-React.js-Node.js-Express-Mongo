@@ -38,6 +38,7 @@ class Reviews extends React.Component {
 
     return reviews.map(review => (
       <Comment
+        key={review._id}
         author={<a>{review.user.userName}</a>}
         avatar={
           <Avatar
