@@ -2,7 +2,6 @@ import React from "react";
 import { Form, Input, Checkbox, Button, Modal, message } from "antd";
 import { connect } from "react-redux";
 
-import "./Registration.css";
 import { closeRegistrationDialog } from "../actions/registrationAction";
 
 const mapStateToProps = state => ({
