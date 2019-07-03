@@ -1,7 +1,6 @@
 var express = require("express");
 var nodeMailer = require("nodemailer");
 var router = express.Router();
-//var User = require("../public/js/models/user");
 var passport = require("passport");
 
 var bcrypt = require("bcryptjs");
@@ -34,74 +33,77 @@ router.post("/register", function(req, res, next) {
 
   const db = req.db;
   const collection = db.get("users");
-  collection
-    .find({ email: email })
-    .then(function(data) {
-      if (data.length == 0) {
-        if (password === repeatPassword) {
-          password = bcrypt.hashSync(password, 10);
+  if (password.length > 5) {
+    collection
+      .find({ email: email })
+      .then(function(data) {
+        if (data.length == 0) {
+          if (password === repeatPassword) {
+            password = bcrypt.hashSync(password, 10);
 
-          const user = {
-            userName,
-            email,
-            password,
-            firstName,
-            lastName,
-            type
-          };
+            const user = {
+              userName,
+              email,
+              password,
+              firstName,
+              lastName,
+              type
+            };
 
-          collection.insert(user, {}, function(err, result) {
-            res.send(
-              err === null ? { msg: result, success: true } : { msg: err }
-            );
+            collection.insert(user, {}, function(err, result) {
+              res.send(
+                err === null ? { msg: result, success: true } : { msg: err }
+              );
 
-            if (err === null) {
-              let transporter = nodeMailer.createTransport({
-                host: "smtp.gmail.com",
-                port: 465,
-                secure: true,
-                auth: {
-                  // should be replaced with real sender's account
-                  user: "elena.p.nikolova97",
-                  pass: "08977068"
-                }
-              });
-              let mailOptions = {
-                // should be replaced with real recipient's account
-                to: user.email,
-                subject: "Hello new user!",
-                body: "HI there",
-                html: `<b>Hello ${userName}</b><div>Here are your credentials to login in Emazon bookstore: </div> <div>email: ${email}</div><div>password: ${
-                  req.body.password
-                }</div>
+              if (err === null) {
+                let transporter = nodeMailer.createTransport({
+                  host: "smtp.gmail.com",
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    // should be replaced with real sender's account
+                    user: "elena.p.nikolova97",
+                    pass: "08977068"
+                  }
+                });
+                let mailOptions = {
+                  // should be replaced with real recipient's account
+                  to: user.email,
+                  subject: "Hello new user!",
+                  body: "HI there",
+                  html: `<b>Hello ${userName}</b><div>Welcome to our Emazon world.</div><div>Here are your credentials to login in Emazon bookstore: </div> <div>email: ${email}</div><div>password: ${
+                    req.body.password
+                  }</div>
                 <div>Best Regards</div>
                 <div>Emazon team</div>`
-              };
-              transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                  console.log(error);
-                  res.status(400).send({ success: false });
-                } else {
-                  res.status(200).send({ success: true });
-                }
-                console.log(
-                  "Message %s sent: %s",
-                  info.messageId,
-                  info.response
-                );
-              });
-            }
-          });
+                };
+                transporter.sendMail(mailOptions, (error, info) => {
+                  if (error) {
+                    console.log(error);
+                    res.status(400).send({ success: false });
+                  } else {
+                    res.status(200).send({ success: true });
+                  }
+                  console.log(
+                    "Message %s sent: %s",
+                    info.messageId,
+                    info.response
+                  );
+                });
+              }
+            });
+          } else {
+            res.json({ success: false, message: "Passwords don't match!" });
+          }
         } else {
-          res.json({ success: false, message: "Passwords don't match!" });
+          res.json({ success: false, message: "Email is already taken!" });
         }
-      } else {
-        res.json({ success: false, message: "Email is already taken!" });
-      }
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+  res.json({ success: false });
 });
 
 router.put("/:id", function(req, res, next) {
@@ -160,7 +162,5 @@ router.post("/", function(req, res, next) {
     }
   });
 });
-
-router.post("/send-email", function(req, res) {});
 
 module.exports = router;
